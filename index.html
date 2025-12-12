@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StereoPilot: Unified Stereo Conversion</title>
+  
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="video-eye2eye.github.io/static/css/bulma.min.css">
+  <link rel="stylesheet" href="video-eye2eye.github.io/static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="video-eye2eye.github.io/static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="video-eye2eye.github.io/static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="video-eye2eye.github.io/static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="video-eye2eye.github.io/static/js/fontawesome.all.min.js"></script>
+  <script src="video-eye2eye.github.io/static/js/bulma-carousel.min.js"></script>
+  <script src="video-eye2eye.github.io/static/js/bulma-slider.min.js"></script>
+  <script src="video-eye2eye.github.io/static/js/index.js"></script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+    }
+    .publication-title, .publication-authors, .teaser {
+      font-family: 'Google Sans', sans-serif;
+    }
+    .publication-authors a {
+      color: hsl(204, 86%, 53%) !important;
+    }
+    /* Custom adjustments to match user needs while keeping Eye2Eye style */
+    .video-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .video-card {
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .video-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+    .video-wrapper {
+      flex: 1;
+      min-width: 300px;
+      max-width: 600px; /* Limit max width for better layout */
+    }
+    .video-wrapper video {
+      width: 100%;
+      border-radius: 4px;
+      display: block;
+    }
+    .video-label {
+      font-size: 0.9rem;
+      color: #4a4a4a;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+    .switch-btn-container {
+      margin-bottom: 12px;
+    }
+    .teaser-video {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .figure-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-bottom: 10px;
+    }
+    /* Hide scrollbars on iframes if possible */
+    iframe {
+        overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">StereoPilot: Learning Unified and Efficient Stereo Conversion via Generative Priors</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://a-bigbao.github.io" target="_blank">Guibao Shen</a><sup>1,3*†</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://hit-perfect.github.io" target="_blank">Yihua Du</a><sup>1*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" target="_blank">Wenhang Ge</a><sup>1,3*†</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" target="_blank">Jing He</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" target="_blank">Chirui Chang</a><sup>3</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" target="_blank">Donghao Zhou</a><sup>4</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" target="_blank">Zhen Yang</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" target="_blank">Luozhou Wang</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" target="_blank">Xin Tao</a><sup>3</sup>,
+              </span>
+              <span class="author-block">
+                <a href="#" target="_blank">Ying-cong Chen</a><sup>1,2‡</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>HKUST(GZ)</span> &nbsp;
+              <span class="author-block"><sup>2</sup>HKUST</span> &nbsp;
+              <span class="author-block"><sup>3</sup>Kling Team, Kuaishou Technology</span> &nbsp;
+              <span class="author-block"><sup>4</sup>CUHK</span>
+            </div>
+            
+            <div class="is-size-6 publication-authors">
+              <span class="author-block"><sup>*</sup>Equal contribution &nbsp; <sup>†</sup>This work was conducted during the author's internship at Kling &nbsp; <sup>‡</sup>Corresponding author</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- ArXiv Link -->
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Code Link -->
+                <span class="link-block">
+                  <a href="https://github.com/hit-perfect/StereoPilot_Dataprocess" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser Video -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <div class="content has-text-centered" style="margin-bottom: 20px;">
+          <p class="is-size-5 has-text-weight-medium">
+            <span class="icon is-small" style="vertical-align: middle; margin-right: 4px;">
+              <i class="fas fa-volume-up"></i>
+            </span>
+            Please enable sound for the best experience
+          </p>
+        </div>
+
+        <h4 class="title is-4 has-text-centered">Showcase Video</h4>
+        <video class="teaser-video" autoplay controls muted loop playsinline style="margin-bottom: 30px;">
+          <source src="Video_Intro/video_music.mp4" type="video/mp4">
+        </video>
+        
+        <h4 class="title is-4 has-text-centered">Introduction Video</h4>
+        <video class="teaser-video" autoplay controls muted loop playsinline>
+          <source src="Video_Intro/StereoPilot.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              The rapid growth of stereoscopic displays, including VR headsets and 3D cinemas, has led to increasing demand for high-quality stereo video content. However, producing 3D videos remains costly and complex, while automatic Monocular-to-Stereo conversion is hindered by the limitations of the multi-stage “Depth-Warp-Inpaint” (DWI) pipeline. This paradigm suffers from error propagation, depth ambiguity, and format inconsistency between parallel and converged stereo configurations. To address these challenges, we introduce UniStereo, the first large-scale unified dataset for stereo video conversion, covering both stereo formats to enable fair benchmarking and robust model training. Building upon this dataset, we propose StereoPilot, an efficient feed-forward model that directly synthesizes the target view without relying on explicit depth maps or iterative diffusion sampling. Equipped with a learnable domain switcher and a cycle consistency loss, StereoPilot adapts seamlessly to different stereo formats and achieves improved consistency. Extensive experiments demonstrate that StereoPilot significantly outperforms state-of-the-art methods in both visual fidelity and computational efficiency. All data and code will be made publicly available.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contributions -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Contributions</h2>
+          <div class="content has-text-justified">
+            <ul>
+              <li>We introduce UniStereo, the first large-scale, unified dataset for stereo video conversion, featuring both parallel and converged formats to enable fair benchmarking and model comparisons.</li>
+              <li>We propose StereoPilot, an efficient feed-forward architecture that leverages a pretrained video diffusion transformer to directly synthesize the novel view. It overcomes the limitations of “Depth-Warp-Inpaint” methods (error propagation, depth ambiguity, and format-specific assumptions) without iterative denoising overhead, while integrating a domain switcher and cycle consistency loss for robust multi-format processing.</li>
+              <li>Extensive experiments show StereoPilot significantly outperforms state-of-the-art methods on our UniStereo benchmark in both visual quality and efficiency.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Method -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Method & Pipeline</h2>
+
+      <div class="columns is-centered" style="margin-bottom: 40px;">
+        <div class="column has-text-centered">
+          <img src="Figs/StereoPilot_pipeline.png" class="figure-img" alt="StereoPilot Pipeline" style="max-width: 90%;">
+          <div class="content has-text-justified" style="max-width: 90%; margin: 0 auto;">
+            <p>
+              <strong>The training framework of the proposed StereoPilot.</strong> StereoPilot uses a <em>single-step feed-forward</em> architecture (Diffusion as Feed-Forward) that incorporates a <em>learnable domain switcher <i>s</i></em> to unify conversion for both parallel and converged stereo formats. The entire model is optimized using a <em>cycle-consistent training strategy</em>, combining reconstruction and cycle-consistency losses to ensure high fidelity and precise geometric alignment.
+            </p>
+            <p>
+              The <span style="color: #205E9B; font-weight: bold;">blue</span> and <span style="color: #C04E15; font-weight: bold;">orange</span> lines represent the Left-to-Right and Right-to-Left reconstruction processes, and the <span style="color: #C04E15; font-weight: bold; border-bottom: 2px dashed #C04E15;">orange dashed line</span> denotes the <i>L &rarr; R &rarr; L</i> cycle-consistency path.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UniStereo Dataset & Data Preparation -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">UniStereo Dataset & Data Preparation</h2>
+
+      <!-- Parallel vs. Converged (Full Width) -->
+      <div class="columns is-centered" style="margin-bottom: 30px;">
+        <div class="column has-text-centered">
+          <h4 class="title is-4 has-text-centered">Parallel vs. Converged Stereo</h4>
+          <img src="Figs/parallel_vs_converged.png" class="figure-img" alt="Parallel vs Converged Stereo" style="max-width: 80%;">
+          <div class="content has-text-justified is-size-6 has-text-grey" style="max-width: 80%; margin: 0 auto;">
+            <p>
+              In the parallel setup, when both eyes observe the same subject, the projected image points on the left and right views are denoted as X<sub>L</sub> and X<sub>R</sub>, and their absolute difference |X<sub>L</sub> - X<sub>R</sub>| defines the disparity <i>s</i>.
+   
+              According to geometric relationships derived from similar triangles, <i>b</i>, <i>f</i>, <i>d</i>, and <i>s</i> satisfy an inverse proportionality between disparity and depth when the baseline <i>b</i> and focal length <i>f</i> remain constant.
+ 
+              In the converged configuration, a <em>Zero-disparity Projection Plane</em> is present—objects in front of this plane yield positive disparity, while those behind it produce negative disparity.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GIF Examples -->
+      <div class="container" style="margin-bottom: 40px;">
+        <h4 class="title is-5 has-text-centered">Converged Stereo Examples</h4>
+        <div class="columns is-centered">
+          <div class="column is-half has-text-centered">
+            <img src="Figs/Avatar.gif" class="figure-img" alt="Avatar (Converged)" style="width: 100%; border-radius: 8px;">
+          </div>
+          <div class="column is-half has-text-centered">
+            <img src="Figs/PacificRim.gif" class="figure-img" alt="Pacific Rim (Converged)" style="width: 100%; border-radius: 8px;">
+          </div>
+        </div>
+
+        <h4 class="title is-5 has-text-centered" style="margin-top: 20px;">Parallel Stereo Examples</h4>
+        <div class="columns is-centered">
+          <div class="column is-half has-text-centered">
+            <img src="Figs/AWz0LqOPER0_141875209.gif" class="figure-img" alt="Parallel Example 1" style="width: 100%; border-radius: 8px;">
+          </div>
+          <div class="column is-half has-text-centered">
+            <img src="Figs/GPoC8t1IO68_48448448.gif" class="figure-img" alt="Parallel Example 2" style="width: 100%; border-radius: 8px;">
+          </div>
+        </div>
+      </div>
+
+      <!-- UniStereo Construction Pipeline (Full Width) -->
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h4 class="title is-4 has-text-centered">UniStereo Construction Pipeline</h4>
+          <img src="Figs/Datapipeline.png" class="figure-img" alt="Data Pipeline" style="max-width: 90%;">
+          <div class="content has-text-justified is-size-6 has-text-grey" style="max-width: 90%; margin: 0 auto;">
+            <p>
+              We use green icons with numbered steps to depict the Stereo4D pipeline: starting from the raw VR180 videos, we set hfov = 90° and specify the projection resolution to produce the final left- and right-eye monocular videos. Simultaneously, blue icons with numbered steps denote the 3DMovie pipeline: we segment the source films into clips, filter out non-informative segments, convert from side-by-side (SBS) to left/right monocular views, and remove black borders. All resulting videos are captioned using ShareGPT4Video.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experiments -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Experiments</h2>
+      
+      <!-- Qualitative Results -->
+      <div class="columns is-centered" style="margin-bottom: 40px;">
+        <div class="column has-text-centered">
+          <h4 class="title is-4 has-text-centered">Qualitative Results</h4>
+          <img src="Figs/QuantitativeResults.png" class="figure-img" alt="Qualitative Results" style="max-width: 90%;">
+          <div class="content has-text-justified is-size-6 has-text-grey" style="max-width: 90%; margin: 0 auto;">
+            <p>
+              <strong>Qualitative Results.</strong> Our method achieves more accurate disparity estimation and preserves finer visual details on both Parallel and Converged data compared with existing baselines.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quantitative Results -->
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h4 class="title is-4 has-text-centered">Quantitative Results</h4>
+          <div class="content is-size-7">
+            <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin: 0 auto; max-width: 100%;">
+              <thead>
+                <tr>
+                  <th rowspan="2" style="vertical-align: middle;">Method</th>
+                  <th rowspan="2" style="vertical-align: middle;">Venues</th>
+                  <th colspan="5">Stereo4D-Parallel Format</th>
+                  <th colspan="5">3D Movie-Converged Format</th>
+                  <th rowspan="2" style="vertical-align: middle;">Latency&darr;</th>
+                </tr>
+                <tr>
+                  <th>SSIM&uarr;</th>
+                  <th>MS-SSIM&uarr;</th>
+                  <th>PSNR&uarr;</th>
+                  <th>LPIPS&darr;</th>
+                  <th>SIOU&uarr;</th>
+                  <th>SSIM&uarr;</th>
+                  <th>MS-SSIM&uarr;</th>
+                  <th>PSNR&uarr;</th>
+                  <th>LPIPS&darr;</th>
+                  <th>SIOU&uarr;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>StereoDiffusion</td>
+                  <td>CVPR'24</td>
+                  <td>0.642</td>
+                  <td>0.711</td>
+                  <td>20.541</td>
+                  <td>0.245</td>
+                  <td>0.252</td>
+                  <td>0.678</td>
+                  <td>0.612</td>
+                  <td>20.695</td>
+                  <td>0.341</td>
+                  <td>0.181</td>
+                  <td>60 min</td>
+                </tr>
+                <tr>
+                  <td>StereoCrafter</td>
+                  <td>arXiv'24</td>
+                  <td>0.553</td>
+                  <td>0.562</td>
+                  <td>17.673</td>
+                  <td>0.298</td>
+                  <td>0.226</td>
+                  <td>0.706</td>
+                  <td>0.799</td>
+                  <td>23.794</td>
+                  <td>0.203</td>
+                  <td>0.213</td>
+                  <td>1 min</td>
+                </tr>
+                <tr>
+                  <td>SVG</td>
+                  <td>ICLR'25</td>
+                  <td>0.561</td>
+                  <td>0.543</td>
+                  <td>17.971</td>
+                  <td>0.368</td>
+                  <td>0.220</td>
+                  <td>0.653</td>
+                  <td>0.553</td>
+                  <td>19.059</td>
+                  <td>0.426</td>
+                  <td>0.166</td>
+                  <td>70 min</td>
+                </tr>
+                <tr>
+                  <td>ReCamMaster</td>
+                  <td>ICCV'25</td>
+                  <td>0.542</td>
+                  <td>0.525</td>
+                  <td>17.229</td>
+                  <td>0.312</td>
+                  <td>0.239</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>15 min</td>
+                </tr>
+                <tr>
+                  <td>M2SVid</td>
+                  <td>arXiv'25</td>
+                  <td>--</td>
+                  <td>0.915</td>
+                  <td>26.200</td>
+                  <td>0.180</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>--</td>
+                </tr>
+                <tr>
+                  <td>Mono2Stereo</td>
+                  <td>CVPR'25</td>
+                  <td>0.649</td>
+                  <td>0.721</td>
+                  <td>20.894</td>
+                  <td>0.222</td>
+                  <td>0.241</td>
+                  <td>0.795</td>
+                  <td>0.810</td>
+                  <td>25.756</td>
+                  <td>0.191</td>
+                  <td>0.201</td>
+                  <td>15 min</td>
+                </tr>
+                <tr style="border-top: 2px solid #dbdbdb;">
+                  <td><strong>StereoPilot (Ours)</strong></td>
+                  <td>--</td>
+                  <td><strong>0.861</strong></td>
+                  <td><strong>0.937</strong></td>
+                  <td><strong>27.735</strong></td>
+                  <td><strong>0.087</strong></td>
+                  <td><strong>0.408</strong></td>
+                  <td><strong>0.837</strong></td>
+                  <td><strong>0.872</strong></td>
+                  <td><strong>27.856</strong></td>
+                  <td><strong>0.122</strong></td>
+                  <td><strong>0.260</strong></td>
+                  <td><strong>11 s</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- In-domain Videos -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">In-Domain (GT vs. Ours)</h2>
+      <p class="subtitle is-6 has-text-centered">
+        Switch between <strong>Anaglyph</strong> and <strong>Side-by-Side (SBS)</strong> views.
+      </p>
+      
+      <div id="dataset-container"></div>
+    </div>
+  </section>
+
+  <!-- Out-of-Domain Videos -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Out-of-Domain (OOD)</h2>
+      <p class="subtitle is-6 has-text-centered">
+        Generalization on wild videos. Switch between <strong>Anaglyph</strong> and <strong>Side-by-Side (SBS)</strong>.
+      </p>
+
+      <div class="content has-text-centered" style="margin-bottom: 20px;">
+        <p class="is-size-5 has-text-weight-medium">
+          <span class="icon is-small" style="vertical-align: middle; margin-right: 4px;">
+            <i class="fas fa-volume-up"></i>
+          </span>
+          Please enable sound for the best experience
+        </p>
+      </div>
+      
+      <div id="ood-container"></div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{shen2025stereopilot,
+  title={StereoPilot: Learning Unified and Efficient Stereo Conversion via Generative Priors},
+  author={Shen, Guibao and Du, Yihua and Ge, Wenhang and He, Jing and Chang, Chirui and Zhou, Donghao and Yang, Zhen and Wang, Luozhou and Tao, Xin and Chen, Ying-cong},
+  journal={arXiv preprint},
+  year={2025}
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          <strong>StereoPilot</strong> · 2025
+        </p>
+        <p>
+          We thank <a href="https://video-eye2eye.github.io/" target="_blank">Eye2Eye</a> for their project page template.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // --- In-Domain Logic ---
+    const datasets = [
+      { key: "3DMovie", label: "3DMovie", cases: 8 },
+      { key: "Stereo4D", label: "Stereo4D", cases: 8 },
+      { key: "UE5", label: "UE5", cases: 5 }
+    ];
+
+    const container = document.getElementById("dataset-container");
+
+    datasets.forEach(ds => {
+      // Section wrapper
+      const section = document.createElement("div");
+      section.style.marginBottom = "40px";
+      
+      // Title
+      const title = document.createElement("h3");
+      title.className = "title is-4";
+      title.textContent = ds.label;
+      section.appendChild(title);
+
+      // Grid container
+      const grid = document.createElement("div");
+      grid.className = "video-grid";
+      
+      // Generate cards
+      for (let i = 1; i <= ds.cases; i++) {
+        const card = document.createElement("div");
+        card.className = "video-card";
+        
+        // Header Row
+        const switchBtnContainer = document.createElement("div");
+        switchBtnContainer.className = "switch-btn-container";
+        
+        const toggleBtn = document.createElement("button");
+        toggleBtn.className = "button is-small"; 
+        toggleBtn.textContent = "Click to view SBS";
+        toggleBtn.style.minWidth = "140px";
+        
+        switchBtnContainer.appendChild(toggleBtn);
+        card.appendChild(switchBtnContainer);
+
+        // Videos Row
+        const videoRow = document.createElement("div");
+        videoRow.className = "video-row";
+
+        // Helper to create video wrapper
+        const createVideoWrapper = (type, label) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "video-wrapper";
+          
+          const vid = document.createElement("video");
+          vid.autoplay = true;
+          vid.controls = true;
+          vid.muted = true;
+          vid.loop = true;
+          vid.playsInline = true;
+          vid.preload = "metadata";
+          vid.src = `indomain_videos/${ds.key}/${i}/anaglyph_${type}.mp4`;
+          
+          const lbl = document.createElement("p");
+          lbl.className = "video-label";
+          lbl.textContent = label;
+
+          wrapper.appendChild(vid);
+          wrapper.appendChild(lbl);
+          return { wrapper, vid };
+        };
+
+        const gtObj = createVideoWrapper("gt", "Ground Truth");
+        const oursObj = createVideoWrapper("ours", "StereoPilot (Ours)");
+
+        videoRow.appendChild(gtObj.wrapper);
+        videoRow.appendChild(oursObj.wrapper);
+        card.appendChild(videoRow);
+        grid.appendChild(card);
+
+        // Sync Logic
+        const v1 = gtObj.vid;
+        const v2 = oursObj.vid;
+        let isSyncing = false;
+
+        const sync = (source, target) => {
+          if (isSyncing) return;
+          isSyncing = true;
+          if (!source.paused && target.paused) target.play();
+          if (source.paused && !target.paused) target.pause();
+          if (Math.abs(source.currentTime - target.currentTime) > 0.1) {
+            target.currentTime = source.currentTime;
+          }
+          setTimeout(() => { isSyncing = false; }, 50);
+        };
+
+        v1.addEventListener("play", () => sync(v1, v2));
+        v1.addEventListener("pause", () => sync(v1, v2));
+        v1.addEventListener("seeking", () => sync(v1, v2));
+        v1.addEventListener("timeupdate", () => sync(v1, v2));
+
+        v2.addEventListener("play", () => sync(v2, v1));
+        v2.addEventListener("pause", () => sync(v2, v1));
+        v2.addEventListener("seeking", () => sync(v2, v1));
+        v2.addEventListener("timeupdate", () => sync(v2, v1));
+
+        // Toggle Logic
+        let currentFormat = "anaglyph";
+        toggleBtn.onclick = () => {
+          v1.pause();
+          v2.pause();
+          
+          const currentTime = v1.currentTime; // Remember time
+
+          if (currentFormat === "anaglyph") {
+            currentFormat = "sbs";
+            toggleBtn.textContent = "Click to view Anaglyph";
+            v1.src = `indomain_videos/${ds.key}/${i}/sbs_gt.mp4`;
+            v2.src = `indomain_videos/${ds.key}/${i}/sbs_ours.mp4`;
+          } else {
+            currentFormat = "anaglyph";
+            toggleBtn.textContent = "Click to view SBS";
+            v1.src = `indomain_videos/${ds.key}/${i}/anaglyph_gt.mp4`;
+            v2.src = `indomain_videos/${ds.key}/${i}/anaglyph_ours.mp4`;
+          }
+          
+          // Load new source
+          v1.load();
+          v2.load();
+          // Restore time
+          v1.currentTime = currentTime;
+          v2.currentTime = currentTime;
+          
+          // Try to autoplay after switch
+          const p1 = v1.play();
+          const p2 = v2.play();
+        };
+      }
+      section.appendChild(grid);
+      container.appendChild(section);
+    });
+
+    // --- Out-of-Domain Logic ---
+    const oodFolders = [
+      "AChineseOdysseyPart2_16fps-Scene-1406_001_832x480",
+      "HarryPotter6HalfBloodPrince_16fps-Scene-0093_002_832x480",
+      "Inception_16fps-Scene-0549_002_832x480",
+      "KingofComedy_16fps-Scene-0243_001_832x480",
+      "LettheBulletsFly_16fps-Scene-0867_001_832x480"
+    ];
+
+    const oodContainer = document.getElementById("ood-container");
+    const oodGrid = document.createElement("div");
+    oodGrid.className = "video-grid";
+
+    oodFolders.forEach(folder => {
+      const card = document.createElement("div");
+      card.className = "video-card";
+      
+      // Header Row
+      const switchBtnContainer = document.createElement("div");
+      switchBtnContainer.className = "switch-btn-container";
+      
+      const toggleBtn = document.createElement("button");
+      toggleBtn.className = "button is-small"; 
+      toggleBtn.textContent = "Click to view SBS";
+      toggleBtn.style.minWidth = "140px";
+      
+      switchBtnContainer.appendChild(toggleBtn);
+      card.appendChild(switchBtnContainer);
+
+      // Videos Row
+      const videoRow = document.createElement("div");
+      videoRow.className = "video-row";
+
+      // Wrapper
+      const wrapper = document.createElement("div");
+      wrapper.className = "video-wrapper";
+      wrapper.style.maxWidth = "800px"; // Allow wider for single video
+
+      const vid = document.createElement("video");
+      vid.autoplay = true;
+      vid.controls = true;
+      vid.muted = true;
+      vid.loop = true;
+      vid.playsInline = true;
+      vid.preload = "metadata";
+      vid.src = `OutOfDomain_videos/${folder}/anaglyph_converged.mp4`;
+      
+      const lbl = document.createElement("p");
+      lbl.className = "video-label";
+      lbl.textContent = folder.split('_')[0]; // Simple label from folder name
+
+      wrapper.appendChild(vid);
+      wrapper.appendChild(lbl);
+      videoRow.appendChild(wrapper);
+      card.appendChild(videoRow);
+      oodGrid.appendChild(card);
+
+      // Toggle Logic
+      let currentFormat = "anaglyph";
+      toggleBtn.onclick = () => {
+        vid.pause();
+        const t = vid.currentTime;
+        if (currentFormat === "anaglyph") {
+          currentFormat = "sbs";
+          toggleBtn.textContent = "Click to view Anaglyph";
+          vid.src = `OutOfDomain_videos/${folder}/sbs_converged.mp4`;
+          // vid.style.aspectRatio = "32/9"; 
+        } else {
+          currentFormat = "anaglyph";
+          toggleBtn.textContent = "Click to view SBS";
+          vid.src = `OutOfDomain_videos/${folder}/anaglyph_converged.mp4`;
+          // vid.style.aspectRatio = "16/9";
+        }
+        vid.load();
+        vid.currentTime = t;
+        vid.play();
+      };
+    });
+    
+    oodContainer.appendChild(oodGrid);
+
+  </script>
+
+</body>
+</html>
