@@ -227,21 +227,20 @@
   </section>
 
   <!-- Method -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Method & Pipeline</h2>
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered">Method & Pipeline</h2>
 
-      <div class="columns is-centered" style="margin-bottom: 40px;">
-        <div class="column has-text-centered">
-          <img src="Figs/StereoPilot_pipeline.png" class="figure-img" alt="StereoPilot Pipeline" style="max-width: 90%;">
-          <div class="content has-text-justified" style="max-width: 90%; margin: 0 auto;">
-            <p>
-              <strong>The training framework of the proposed StereoPilot.</strong> StereoPilot uses a <em>single-step feed-forward</em> architecture (Diffusion as Feed-Forward) that incorporates a <em>learnable domain switcher <i>s</i></em> to unify conversion for both parallel and converged stereo formats. The entire model is optimized using a <em>cycle-consistent training strategy</em>, combining reconstruction and cycle-consistency losses to ensure high fidelity and precise geometric alignment.
-            </p>
-            <p>
-              The <span style="color: #205E9B; font-weight: bold;">blue</span> and <span style="color: #C04E15; font-weight: bold;">orange</span> lines represent the Left-to-Right and Right-to-Left reconstruction processes, and the <span style="color: #C04E15; font-weight: bold; border-bottom: 2px dashed #C04E15;">orange dashed line</span> denotes the <i>L &rarr; R &rarr; L</i> cycle-consistency path.
-            </p>
-          </div>
+        <img src="Figs/StereoPilot_pipeline.png" width="100%" alt="StereoPilot Pipeline" style="margin-bottom: 2rem;">
+        
+        <div class="content has-text-justified">
+          <p>
+            <strong>The training framework of the proposed StereoPilot.</strong> StereoPilot uses a <em>single-step feed-forward</em> architecture (Diffusion as Feed-Forward) that incorporates a <em>learnable domain switcher <i>s</i></em> to unify conversion for both parallel and converged stereo formats. The entire model is optimized using a <em>cycle-consistent training strategy</em>, combining reconstruction and cycle-consistency losses to ensure high fidelity and precise geometric alignment.
+          </p>
+          <p>
+            The <span style="color: #205E9B; font-weight: bold;">blue</span> and <span style="color: #C04E15; font-weight: bold;">orange</span> lines represent the Left-to-Right and Right-to-Left reconstruction processes, and the <span style="color: #C04E15; font-weight: bold; border-bottom: 2px dashed #C04E15;">orange dashed line</span> denotes the <i>L &rarr; R &rarr; L</i> cycle-consistency path.
+          </p>
         </div>
       </div>
     </div>
@@ -308,159 +307,153 @@
   </section>
 
   <!-- Experiments -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Experiments</h2>
-      
-      <!-- Qualitative Results -->
-      <div class="columns is-centered" style="margin-bottom: 40px;">
-        <div class="column has-text-centered">
-          <h4 class="title is-4 has-text-centered">Qualitative Results</h4>
-          <img src="Figs/QuantitativeResults.png" class="figure-img" alt="Qualitative Results" style="max-width: 90%;">
-          <div class="content has-text-justified is-size-6 has-text-grey" style="max-width: 90%; margin: 0 auto;">
-            <p>
-              <strong>Qualitative Results.</strong> Our method achieves more accurate disparity estimation and preserves finer visual details on both Parallel and Converged data compared with existing baselines.
-            </p>
-          </div>
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered">Experiments</h2>
+        
+        <!-- Qualitative Results -->
+        <h4 class="title is-4 has-text-centered">Qualitative Results</h4>
+        <img src="Figs/QuantitativeResults.png" width="100%" alt="Qualitative Results" style="margin-bottom: 2rem;">
+        <div class="content has-text-justified">
+          <p>
+            <strong>Qualitative Results.</strong> Our method achieves more accurate disparity estimation and preserves finer visual details on both Parallel and Converged data compared with existing baselines.
+          </p>
         </div>
-      </div>
 
-      <!-- Quantitative Results -->
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h4 class="title is-4 has-text-centered">Quantitative Results</h4>
-          <div class="content is-size-7">
-            <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin: 0 auto; max-width: 100%;">
-              <thead>
-                <tr>
-                  <th rowspan="2" style="vertical-align: middle;">Method</th>
-                  <th rowspan="2" style="vertical-align: middle;">Venues</th>
-                  <th colspan="5">Stereo4D-Parallel Format</th>
-                  <th colspan="5">3D Movie-Converged Format</th>
-                  <th rowspan="2" style="vertical-align: middle;">Latency&darr;</th>
-                </tr>
-                <tr>
-                  <th>SSIM&uarr;</th>
-                  <th>MS-SSIM&uarr;</th>
-                  <th>PSNR&uarr;</th>
-                  <th>LPIPS&darr;</th>
-                  <th>SIOU&uarr;</th>
-                  <th>SSIM&uarr;</th>
-                  <th>MS-SSIM&uarr;</th>
-                  <th>PSNR&uarr;</th>
-                  <th>LPIPS&darr;</th>
-                  <th>SIOU&uarr;</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>StereoDiffusion</td>
-                  <td>CVPR'24</td>
-                  <td>0.642</td>
-                  <td>0.711</td>
-                  <td>20.541</td>
-                  <td>0.245</td>
-                  <td>0.252</td>
-                  <td>0.678</td>
-                  <td>0.612</td>
-                  <td>20.695</td>
-                  <td>0.341</td>
-                  <td>0.181</td>
-                  <td>60 min</td>
-                </tr>
-                <tr>
-                  <td>StereoCrafter</td>
-                  <td>arXiv'24</td>
-                  <td>0.553</td>
-                  <td>0.562</td>
-                  <td>17.673</td>
-                  <td>0.298</td>
-                  <td>0.226</td>
-                  <td>0.706</td>
-                  <td>0.799</td>
-                  <td>23.794</td>
-                  <td>0.203</td>
-                  <td>0.213</td>
-                  <td>1 min</td>
-                </tr>
-                <tr>
-                  <td>SVG</td>
-                  <td>ICLR'25</td>
-                  <td>0.561</td>
-                  <td>0.543</td>
-                  <td>17.971</td>
-                  <td>0.368</td>
-                  <td>0.220</td>
-                  <td>0.653</td>
-                  <td>0.553</td>
-                  <td>19.059</td>
-                  <td>0.426</td>
-                  <td>0.166</td>
-                  <td>70 min</td>
-                </tr>
-                <tr>
-                  <td>ReCamMaster</td>
-                  <td>ICCV'25</td>
-                  <td>0.542</td>
-                  <td>0.525</td>
-                  <td>17.229</td>
-                  <td>0.312</td>
-                  <td>0.239</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>15 min</td>
-                </tr>
-                <tr>
-                  <td>M2SVid</td>
-                  <td>arXiv'25</td>
-                  <td>--</td>
-                  <td>0.915</td>
-                  <td>26.200</td>
-                  <td>0.180</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>--</td>
-                  <td>--</td>
-                </tr>
-                <tr>
-                  <td>Mono2Stereo</td>
-                  <td>CVPR'25</td>
-                  <td>0.649</td>
-                  <td>0.721</td>
-                  <td>20.894</td>
-                  <td>0.222</td>
-                  <td>0.241</td>
-                  <td>0.795</td>
-                  <td>0.810</td>
-                  <td>25.756</td>
-                  <td>0.191</td>
-                  <td>0.201</td>
-                  <td>15 min</td>
-                </tr>
-                <tr style="border-top: 2px solid #dbdbdb;">
-                  <td><strong>StereoPilot (Ours)</strong></td>
-                  <td>--</td>
-                  <td><strong>0.861</strong></td>
-                  <td><strong>0.937</strong></td>
-                  <td><strong>27.735</strong></td>
-                  <td><strong>0.087</strong></td>
-                  <td><strong>0.408</strong></td>
-                  <td><strong>0.837</strong></td>
-                  <td><strong>0.872</strong></td>
-                  <td><strong>27.856</strong></td>
-                  <td><strong>0.122</strong></td>
-                  <td><strong>0.260</strong></td>
-                  <td><strong>11 s</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <!-- Quantitative Results -->
+        <h4 class="title is-4 has-text-centered" style="margin-top: 3rem;">Quantitative Results</h4>
+        <div class="content is-size-7">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin: 0 auto; max-width: 100%;">
+            <thead>
+              <tr>
+                <th rowspan="2" style="vertical-align: middle;">Method</th>
+                <th rowspan="2" style="vertical-align: middle;">Venues</th>
+                <th colspan="5">Stereo4D-Parallel Format</th>
+                <th colspan="5">3D Movie-Converged Format</th>
+                <th rowspan="2" style="vertical-align: middle;">Latency&darr;</th>
+              </tr>
+              <tr>
+                <th>SSIM&uarr;</th>
+                <th>MS-SSIM&uarr;</th>
+                <th>PSNR&uarr;</th>
+                <th>LPIPS&darr;</th>
+                <th>SIOU&uarr;</th>
+                <th>SSIM&uarr;</th>
+                <th>MS-SSIM&uarr;</th>
+                <th>PSNR&uarr;</th>
+                <th>LPIPS&darr;</th>
+                <th>SIOU&uarr;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>StereoDiffusion</td>
+                <td>CVPR'24</td>
+                <td>0.642</td>
+                <td>0.711</td>
+                <td>20.541</td>
+                <td>0.245</td>
+                <td>0.252</td>
+                <td>0.678</td>
+                <td>0.612</td>
+                <td>20.695</td>
+                <td>0.341</td>
+                <td>0.181</td>
+                <td>60 min</td>
+              </tr>
+              <tr>
+                <td>StereoCrafter</td>
+                <td>arXiv'24</td>
+                <td>0.553</td>
+                <td>0.562</td>
+                <td>17.673</td>
+                <td>0.298</td>
+                <td>0.226</td>
+                <td>0.706</td>
+                <td>0.799</td>
+                <td>23.794</td>
+                <td>0.203</td>
+                <td>0.213</td>
+                <td>1 min</td>
+              </tr>
+              <tr>
+                <td>SVG</td>
+                <td>ICLR'25</td>
+                <td>0.561</td>
+                <td>0.543</td>
+                <td>17.971</td>
+                <td>0.368</td>
+                <td>0.220</td>
+                <td>0.653</td>
+                <td>0.553</td>
+                <td>19.059</td>
+                <td>0.426</td>
+                <td>0.166</td>
+                <td>70 min</td>
+              </tr>
+              <tr>
+                <td>ReCamMaster</td>
+                <td>ICCV'25</td>
+                <td>0.542</td>
+                <td>0.525</td>
+                <td>17.229</td>
+                <td>0.312</td>
+                <td>0.239</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>15 min</td>
+              </tr>
+              <tr>
+                <td>M2SVid</td>
+                <td>arXiv'25</td>
+                <td>--</td>
+                <td>0.915</td>
+                <td>26.200</td>
+                <td>0.180</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+              </tr>
+              <tr>
+                <td>Mono2Stereo</td>
+                <td>CVPR'25</td>
+                <td>0.649</td>
+                <td>0.721</td>
+                <td>20.894</td>
+                <td>0.222</td>
+                <td>0.241</td>
+                <td>0.795</td>
+                <td>0.810</td>
+                <td>25.756</td>
+                <td>0.191</td>
+                <td>0.201</td>
+                <td>15 min</td>
+              </tr>
+              <tr style="border-top: 2px solid #dbdbdb;">
+                <td><strong>StereoPilot (Ours)</strong></td>
+                <td>--</td>
+                <td><strong>0.861</strong></td>
+                <td><strong>0.937</strong></td>
+                <td><strong>27.735</strong></td>
+                <td><strong>0.087</strong></td>
+                <td><strong>0.408</strong></td>
+                <td><strong>0.837</strong></td>
+                <td><strong>0.872</strong></td>
+                <td><strong>27.856</strong></td>
+                <td><strong>0.122</strong></td>
+                <td><strong>0.260</strong></td>
+                <td><strong>11 s</strong></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
