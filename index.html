@@ -657,18 +657,18 @@
 
     // --- Out-of-Domain Logic ---
     const oodFolders = [
-      "AChineseOdysseyPart2_16fps-Scene-1406_001_832x480",
-      "LettheBulletsFly_16fps-Scene-0867_001_832x480",
-      "Inception_16fps-Scene-0549_002_832x480",
-      "KingofComedy_16fps-Scene-0243_001_832x480",
-      "HarryPotter6HalfBloodPrince_16fps-Scene-0093_002_832x480"
+      { folder: "AChineseOdysseyPart2_16fps-Scene-1406_001_832x480", name: "A Chinese Odyssey Part 2" },
+      { folder: "LettheBulletsFly_16fps-Scene-0867_001_832x480", name: "Let the Bullets Fly" },
+      { folder: "Inception_16fps-Scene-0549_002_832x480", name: "Inception" },
+      { folder: "KingofComedy_16fps-Scene-0243_001_832x480", name: "King of Comedy" },
+      { folder: "HarryPotter6HalfBloodPrince_16fps-Scene-0093_002_832x480", name: "Harry Potter 6 Half Blood Prince" }
     ];
 
     const oodContainer = document.getElementById("ood-container");
     const oodGrid = document.createElement("div");
     oodGrid.className = "video-grid";
 
-    oodFolders.forEach(folder => {
+    oodFolders.forEach(item => {
       const card = document.createElement("div");
       card.className = "video-card";
       
@@ -700,11 +700,11 @@
       vid.loop = true;
       vid.playsInline = true;
       vid.preload = "metadata";
-      vid.src = `OutOfDomain_videos/${folder}/anaglyph_converged.mp4`;
+      vid.src = `OutOfDomain_videos/${item.folder}/anaglyph_converged.mp4`;
       
       const lbl = document.createElement("p");
       lbl.className = "video-label";
-      lbl.textContent = folder.split('_')[0]; // Simple label from folder name
+      lbl.textContent = item.name; // Display name with spaces
 
       wrapper.appendChild(vid);
       wrapper.appendChild(lbl);
@@ -720,12 +720,12 @@
         if (currentFormat === "anaglyph") {
           currentFormat = "sbs";
           toggleBtn.textContent = "Click to view Anaglyph";
-          vid.src = `OutOfDomain_videos/${folder}/sbs_converged.mp4`;
+          vid.src = `OutOfDomain_videos/${item.folder}/sbs_converged.mp4`;
           // vid.style.aspectRatio = "32/9"; 
         } else {
           currentFormat = "anaglyph";
           toggleBtn.textContent = "Click to view SBS";
-          vid.src = `OutOfDomain_videos/${folder}/anaglyph_converged.mp4`;
+          vid.src = `OutOfDomain_videos/${item.folder}/anaglyph_converged.mp4`;
           // vid.style.aspectRatio = "16/9";
         }
         vid.load();
