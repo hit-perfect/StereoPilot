@@ -466,6 +466,12 @@
             <img src="Figs/sky.gif" class="figure-img" alt="Domain Switcher Example 2" style="width: 100%; border-radius: 8px;">
           </div>
         </div>
+
+        <!-- Domain Switcher Video Comparison -->
+        <p class="subtitle is-6 has-text-centered">
+          Switch between <img src="Figs/Red_Blue_Glass.png" alt="Anaglyph" style="height: 1.2em; vertical-align: middle; margin-right: 4px;"> <strong>Anaglyph</strong> and <img src="Figs/VR_Glass.png" alt="SBS" style="height: 1.8em; vertical-align: middle; margin-right: 4px;"> <strong>Side-by-Side (SBS)</strong> views.
+        </p>
+        <div id="switcher-container"></div>
       </div>
     </div>
   </section>
@@ -746,6 +752,128 @@
     });
     
     oodContainer.appendChild(oodGrid);
+
+    // --- Domain Switcher Logic ---
+    const switcherCases = [
+      { name: "mirror" },
+      { name: "sky" }
+    ];
+
+    const switcherContainer = document.getElementById("switcher-container");
+    const switcherGrid = document.createElement("div");
+    switcherGrid.className = "video-grid";
+
+    switcherCases.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "video-card";
+      
+      // Toggle button
+      const switchBtnContainer = document.createElement("div");
+      switchBtnContainer.className = "switch-btn-container";
+      
+      const toggleBtn = document.createElement("button");
+      toggleBtn.className = "button is-small"; 
+      toggleBtn.textContent = "Click to view SBS";
+      toggleBtn.style.minWidth = "140px";
+      
+      switchBtnContainer.appendChild(toggleBtn);
+      card.appendChild(switchBtnContainer);
+
+      // Videos Row
+      const videoRow = document.createElement("div");
+      videoRow.className = "video-row";
+
+      // Helper to create video wrapper
+      const createVideoWrapper = (format, label) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "video-wrapper";
+        
+        const vid = document.createElement("video");
+        vid.autoplay = true;
+        vid.controls = true;
+        vid.muted = true;
+        vid.loop = true;
+        vid.playsInline = true;
+        vid.preload = "metadata";
+        vid.src = `Switcher/${item.name}_${format}_anaglyph.mp4`;
+        
+        const lbl = document.createElement("p");
+        lbl.className = "video-label";
+        lbl.textContent = label;
+
+        wrapper.appendChild(vid);
+        wrapper.appendChild(lbl);
+        return { wrapper, vid };
+      };
+
+      const parallelObj = createVideoWrapper("parallel", "Parallel");
+      const convergedObj = createVideoWrapper("converged", "Converged");
+
+      videoRow.appendChild(parallelObj.wrapper);
+      videoRow.appendChild(convergedObj.wrapper);
+      card.appendChild(videoRow);
+      switcherGrid.appendChild(card);
+
+      // Sync Logic
+      const v1 = parallelObj.vid;
+      const v2 = convergedObj.vid;
+      let isSyncing = false;
+
+      const sync = (source, target) => {
+        if (isSyncing) return;
+        isSyncing = true;
+        if (!source.paused && target.paused) target.play();
+        if (source.paused && !target.paused) target.pause();
+        if (Math.abs(source.currentTime - target.currentTime) > 0.1) {
+          target.currentTime = source.currentTime;
+        }
+        setTimeout(() => { isSyncing = false; }, 50);
+      };
+
+      v1.addEventListener("play", () => sync(v1, v2));
+      v1.addEventListener("pause", () => sync(v1, v2));
+      v1.addEventListener("seeking", () => sync(v1, v2));
+      v1.addEventListener("timeupdate", () => sync(v1, v2));
+
+      v2.addEventListener("play", () => sync(v2, v1));
+      v2.addEventListener("pause", () => sync(v2, v1));
+      v2.addEventListener("seeking", () => sync(v2, v1));
+      v2.addEventListener("timeupdate", () => sync(v2, v1));
+
+      // Toggle Logic
+      let currentFormat = "anaglyph";
+      toggleBtn.onclick = () => {
+        v1.pause();
+        v2.pause();
+        
+        const currentTime = v1.currentTime; // Remember time
+
+        if (currentFormat === "anaglyph") {
+          currentFormat = "sbs";
+          toggleBtn.textContent = "Click to view Anaglyph";
+          v1.src = `Switcher/${item.name}_parallel_sbs.mp4`;
+          v2.src = `Switcher/${item.name}_converged_sbs.mp4`;
+        } else {
+          currentFormat = "anaglyph";
+          toggleBtn.textContent = "Click to view SBS";
+          v1.src = `Switcher/${item.name}_parallel_anaglyph.mp4`;
+          v2.src = `Switcher/${item.name}_converged_anaglyph.mp4`;
+        }
+        
+        // Load new source
+        v1.load();
+        v2.load();
+        // Restore time
+        v1.currentTime = currentTime;
+        v2.currentTime = currentTime;
+        
+        // Try to autoplay after switch
+        const p1 = v1.play();
+        const p2 = v2.play();
+      };
+    });
+    
+    switcherContainer.appendChild(switcherGrid);
 
   </script>
 
